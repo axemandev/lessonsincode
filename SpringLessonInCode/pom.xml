@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- * PROJECT DEFINITION: encapsulates all the details necessary for project 
-	including * * PROJECT ARTIFACT: project details that are published to maven/local 
-	repository. One * of the important aspect of artifact is version that is 
-	used for * managing releases (important when it comes to CI/CD). * PROPERTIES: 
-	Common variables * -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<!-- # 
+	 # Maven follows hierarchical system of dependencies. Child dependency inherits details from parent. 
+	 # parent tag defines the parent dependency for current maven project. 
+	 # Only depedencies declared explicitly here would be included in build (ignoring whats declared 
+	 # otherwise in parent). Version number is inhertied from parent. 
+	 # -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.5.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+	
+	<!-- #
+	 # This section declares details for current project that are used to publish it when the project is
+	 # installed in a repository.
+	 # 
+	 # Version: Useful in code build and release process. Both github and maven use it equally to tag 
+	 # and install major/minor releases for project. 
+	 #
+	 # Packaging: Defines packaging method of the project (jar/war). This predominantly defines the folder
+	 # structure and what files go where when the project is built. 
+	 # -->
 	<groupId>learn.axemandev</groupId>
 	<artifactId>SpringLessonInCode</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -21,10 +34,25 @@
 	<name>SpringLessonInCode</name>
 	<description>Learn Spring From Code Comments</description>
 
+	<!-- #
+	 # Properties define variables that can be used in other places in build definition using 
+	 # ${property_name} reference. There are pre-defined properties like java.version that only need
+	 # declaration and override the existing values in parent file. Users can define their own custom
+	 # properties and use it here, e.g. 
+	 # <spring.version>5.0.1</spring.version>
+	 # Usage: <version>${spring.version}</version> 
+	 # -->
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 
+	<!-- #
+	 # Dependencies define which jar files are required for this project and at which level/stage.
+	 # These jars are imported from Maven's central repository. The sequence of import is always 
+	 # local first. Custom or third party repositories (like artifactory) can be defined for both 
+	 # snapshot(dev) and release(prod) versions which then overrides central repository for lookup. 
+	 # These custom repositories manage dependencies through Maven central on their own.  
+	 # -->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -50,7 +78,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -93,6 +120,17 @@
 		</dependency>
 	</dependencies>
 
+	<!-- #
+	 # TODO repository
+	 # -->
+	 
+	<!-- #
+	 # TODO scm
+	 # -->	 
+
+	<!-- #
+	 #
+	 # -->
 	<build>
 		<plugins>
 			<plugin>
