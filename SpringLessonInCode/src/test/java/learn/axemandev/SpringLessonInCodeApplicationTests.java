@@ -42,7 +42,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @TestInstance(Lifecycle): controls lifecycle behavior of class. One of the controls is 
  * creating a single instance for all test cases (methods) instead of default behavior of
  * creating one instance each test case. 
- * 
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -194,7 +193,6 @@ public class SpringLessonInCodeApplicationTests {
 		 */
 		@Test
 		void areLeaders() {
-			System.out.println("Executing " + testInfo.getTestMethod() + " with tags " + testInfo.getTags());
 			testReporter.publishEntry("Executing " + testInfo.getTestMethod() + " with tags " + testInfo.getTags());
 		}
 	}
