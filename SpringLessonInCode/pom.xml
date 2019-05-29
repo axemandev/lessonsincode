@@ -1,5 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- #
+	 # Maven Basics
+	 # 
+	 # Lifecycle Phases 
+	 # ================
+	 # prepare-resources - Copy resources required for project. Resource copying can be customized.
+	 # validate - validate if everything in project is correct for running a build. 
+	 # compile - compile resources to generate classes
+	 # test - Run test cases for the project in /src/main/test folder
+	 # package - create packaged solution (jar/war) based on package definition in pom.xml
+	 # install - install build into local/maven repository
+	 # deploy - deploy application in central maven repository
+	 # 
+	 #
+	 # Goals
+	 # =====
+	 # They are used with lifecycle phase to carry out tasks. There is a pre and post hook for each 
+	 # goal that allows executing custom tasks before and after goal execution. These custom tasks
+	 # should be defined in execution > phase > goal > configuration > task of maven plugin. Along 
+	 # with hooks, even the goal can be customized in similar fashion.
+	 #
+	 # clean - remove previously generated artifacts (classes and package) by deleting build directory.
+	 # default/build - build current project. There are 21 lifecycle stages for build (!!)
+	 # site - create fresh documentation, site using this phase 
+	 # 
+	 #
+	 # Profiles 
+	 # ========
+	 # Profiles are used to created separate build configurations for different environments like 
+	 # dev, staging, production, etc. Profiles can be built at different levels -
+	 #
+	 # project - provide details in pom.xml
+	 # user - provide details in usr/.m2/settings.xml
+	 # system - provide details in mvn/conf/settings.xml
+	 #
+	 # Declare separate profile values in env.[xxx].properties file in src/main/resources.
+	 # Activate profile either by setting <activeProfile> or <env> tags in settings.xml
+	 #
+	 # -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -130,6 +169,9 @@
 
 	<!-- #
 	 #
+	 # Plugins are defined under build.
+	 # 
+	 # Plugin Management provides similar parent-child hierarchy for plugs like for dependencies.
 	 # -->
 	<build>
 		<plugins>
@@ -139,5 +181,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<!-- #
+	 # 
+	 # Plugin Repository _ can be used if plugins are defined and need to be pulled from a different
+	 # location.
+	 # -->
 
 </project>
