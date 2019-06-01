@@ -1,0 +1,10 @@
+<div>
+  <input id="postIt" (keyup.enter)="addPost(postIt)" #postIt>
+  <ul>
+    <li *ngFor="let post of posts"> 
+      {{ post.title }} 
+      <button id="update" value="update" (click)="updatePost(post)">Update</button>
+      <button id="delete" value="delete" (click)="deletePost(post)">Delete</button>
+    </li>
+  </ul>
+</div>
