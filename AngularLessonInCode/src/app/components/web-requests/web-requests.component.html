@@ -1,3 +1,11 @@
+<!-- 
+  -- routerLink directive provides redirection to given url. routerLink is preferred over
+  -- href as href loads entire page. routerLink only re-renders the mapped component. This
+  -- provides base for Single Page Application in Angular. 
+  --
+  -- usage: [routerLink]="['path', 'queryParam1', .. .]"
+  -->
+<a [routerLink]="['/web']">Web</a>
 <div>
   <input id="postIt" (keyup.enter)="addPost(postIt)" #postIt>
   <ul>
