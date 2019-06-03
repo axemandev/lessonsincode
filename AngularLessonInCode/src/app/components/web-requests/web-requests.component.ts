@@ -77,5 +77,4 @@ export class WebRequestsComponent implements OnInit {
       else throw error;
     });
   }
-
 }

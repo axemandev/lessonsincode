@@ -4,8 +4,15 @@
   -- provides base for Single Page Application in Angular. 
   --
   -- usage: [routerLink]="['path', 'queryParam1', .. .]"
+  --
+  -- [routerLinkActive]="css-class1 css-class2" applies mentioned styles when the router
+  -- link is active. This is handy in cases where links are to be highlighted when the user
+  -- navigates to the corresponding page. 
+  -- 
+  -- [queryParams]="{ param keyvalue object }" adds query parameters to the URL.
   -->
-<a [routerLink]="['/web']">Web</a>
+<a [routerLink]="['/']">home</a> <span> &nbsp; </span>
+<a [routerLink]="['/route', 12345, 'sometxt']" [queryParams]="{username: 'penzai', address: 'pen'}">route</a>
 <div>
   <input id="postIt" (keyup.enter)="addPost(postIt)" #postIt>
   <ul>

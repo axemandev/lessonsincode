@@ -51,7 +51,7 @@ import { RoutesComponent } from './components/routes/routes.component';
     */
     RouterModule.forRoot([
       {path: 'web', component: WebRequestsComponent},
-      {path: 'route', component: RoutesComponent}
+      {path: 'route/:routeId/:routeName', component: RoutesComponent}
     ]),
     AppRoutingModule
   ],
