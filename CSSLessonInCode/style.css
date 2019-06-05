@@ -1,3 +1,186 @@
+/*
+ * BASIC CONCEPTS
+ * 
+ * Order of priority while applying styles - 
+ * -----------------------------------------
+ * Inline Styles            HIGHEST
+ * #ID Selectors                |
+ * .class + [attrs] + :psu      |
+ * <tag> and :psu               |
+ * * (apply to all) selector    |
+ * Inhertiance                  V
+ *                           LOWEST
+ * At same level position of style in .css file determines which style takes precedence.
+ * One that appears later in the file overrides ones conflicting and above it.
+ * 
+ * Combinators -
+ * -------------
+ * Combinator specifies specificity of applying style. It is used to dictate which specific
+ * instance of selector should have the style applied. 
+ * For instance if user wants to apply a particular font to a specific h1 selector that is 
+ * inside a div with id container, then style declaration can be -
+ * 
+ * #container h1 { font-family: aerial; }  
+ *
+ * signifying h1 contained at any level within an element with id container should have this 
+ * font family applied. There are many combinators that are available that are listed below.
+ *
+ * + Adjacent Sibling: postfix selector should directly follow prefix selector and both 
+ * should be on the same level.
+ * e.g. h2 + p { color: red; }   
+ * <h2>welcome</h2>
+ * <p>This is welcome subtitle</p>  
+ *
+ * ~ General Sibling: postfix selector can appear anywhere after prefix selector, doesn't 
+ * have to be adjacent, but should be on the same level. 
+ * e.g. h2 ~ p { color: red; }
+ * <h2>welcome</h2>
+ * <h3>to the jungle</h3>
+ * <p>This is welcome subtitle</p>
+ *
+ * > Child: postfix selector gets applied only to direct childs of prefix selector. Nested
+ * children other than direct disccendent do not get the styles. 
+ * e.g. div > p { color: red; }
+ * <div>
+ *  <p>This will appear in red</p>
+ *  <div><p>This won't</p></div>
+ *  <p>And this will</p>
+ * </div>
+ *  
+ * <space> Descendant: every postfix that appears in html inside this prefix gets the style
+ * applied, irrelevant if its depth as a child (or child of child.. .)
+ * e.g. div p { color: red; }
+ * <div><p>This will appear red</p></div>
+ * <p>This won't</p>
+ *
+ * <no-space> Same Element: used to indicate elements having all selectors joined back to back. 
+ * In example below this style is applied to h2 element with id my-id and class my-style
+ * e.g. h2#my-id.my-style { color: red; }
+ *
+ * While applying combinators keep performance in mind. The more specific combinator application
+ * is the better it will perform. The more generic and widespread it is, it will perform badly. 
+ * #id > #id -- will perform awesome | while | body * -- this is immensely poor.
+ *
+ * Box Model -
+ * -----------
+ * + Margin : space outside of element, does not overlap with padding of child elements
+ * | but adjacent elements can have overlapping margins and bigger margin wins
+ * |--- Border : border of the element. Can be manipulated to behave like margin/padding
+ * |------ Padding : space inside of element, between border and content.
+ * |--------- Content : actual content.
+ *
+ */
+
+#lesson-dummy-id {
+    /*
+     * width: default width of html/body is whole viewport. So when width is defined as 100%
+     * element takes entire width of its parent component (only).
+     *
+     * height: default height of html/body is as much content it holds. So 100% on an element
+     * will only take up 100% of "available" space in parent (including own margin). 
+     */
+    width: calc(100% - 50px);
+    height: 100%;
+
+    /*
+     * when we declare width & height of an element it sets it for the content (without border
+     * padding and margin). These things add up to the content resulting in overall size 
+     * larger than what was specified. This is due to behavior of box-sizing. Default value is
+     * content-box: size applies to content
+     * border-box: size applies to content + border + padding (used almost always) 
+     */
+    box-sizing: border-box;
+
+    /*
+     * display property indicates how the element will be rendered on page. 
+     *
+     * inline: inline elements are placed adjacent to each other. e.g. of default inline element
+     * is a tag. these elements take width equal to content and do not allow setting height of the
+     * element. Margin and padding on horitzontal scale do not overlap but vertical ones do. The
+     * element stays in place vertically while adding maring and padding to overlap with block 
+     * elements.
+     *
+     * block: block elements take entire space they're placed pushing other elements to render
+     * away from them. 
+     * 
+     * inline-block: they take width equal to content and sit next to each other but allow placing
+     * top/bottom margin/padding that behaves like block and moves the carrying element not allowing
+     * overlap with other block elements. User can set height attribute to a inline-block element. 
+     *
+     * none: element is still available in dom but just not visible. Handy to play around with js.
+     */
+    display: inline-block;
+
+    /* 
+     * Set element's vertical alignment to middle 
+     * !important: overrides style at all other levels. Bad practice to use it & avoid at all costs
+     */
+    vertical-align: middle !important;
+}
+
+/* 
+ * pseudo classes allow adding style to specific state of an element. 
+ * :hover :active :any :first-child :nth-child() :read-only :required :right :disabled etc.
+ * e.g. a:not(.active) - anchor tag that does not have active class.
+ *
+ * pseudo element allows adding style to specific part of an element. 
+ * ::before ::after ::first-letter ::first-line ::grammar-error ::spelling-error
+ *
+ */
+#some-dummy-id a:hover { font: inherit; }
+
+/* 
+ * HACKS
+ * 
+ * Remove outline from focused elements like button
+ * ------------------------------------------------
+ * <selector>:focus { outline: none; } 
+ *
+ * Merge separate outlines on cell creating thick borders
+ * ------------------------------------------------------
+ * border-collapse: collapse;
+ * 
+ */
+
+header {
+    width: 100%;
+    background-color: aquamarine;
+    height: 150px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+header h3 {
+    margin: 0px;
+}
+
+html, body {
+    margin: 0px;
+}
+
+#white {
+    color: white;
+}
+
 h2 {
-    color: teal;
+    color: rgb(46, 196, 196);
+    background-color: rgb(32, 35, 49);
+}
+
+div {
+    width: 800px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: justify;
+}
+
+div p {
+    color: red;
+}
+
+.main-nav_items {
+    display: inline;
+}
+
+h2#white.test {
+    color: rgb(236, 218, 218);
 }
