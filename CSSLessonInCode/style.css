@@ -108,8 +108,47 @@
      * overlap with other block elements. User can set height attribute to a inline-block element. 
      *
      * none: element is still available in dom but just not visible. Handy to play around with js.
+     * 
+     * float: float removes an element from normal document flow and floats it over other elements
+     * in its position. This may result in other elements displaying underneath the floating 
+     * element. To curb this, we need hacks like using a placeholder div and using clear: both or
+     * left/right to clear elements from under the floating element. There are lot of issues with
+     * float and with advent of flexbox and grid should be avoided at all costs.
      */
     display: inline-block;
+
+    /*
+     * Position styling can be applied to block level as well as inline elements alike. 
+     *
+     * positioning context: values for some position attributes have to be defined as <amount> 
+     * w.r.t. <some context> from [top, right, bottom, left]. This <some context> is positioning
+     * context. 
+     * 
+     * static: (default) static has document's default flow and things are placed in sequence one
+     * after another. Block elements will take their space and inline would be placed adjacent to
+     * each other. Elements will not overlap. Basically, this his how deafult html flow behaves.
+     * Position values (TRBL) do not work with static. They are meant for position other than the
+     * deafult one. 
+     * position context: viewport
+     *
+     * absolute: positioning of element is fixed w.r.t. its parent and moves along with parent
+     * element on scroll. TRBL values can be applied to move the element around w.r.t. ancestor.
+     * position context: first ancestor with position property. (html if none).
+     *
+     * relative:
+     * 
+     * fixed: takes the element out of document flow and element appears with attributes of inline
+     * block display type. It fixes the element in a position that does not move with scroll. 
+     * This is because the position is fixed w.r.t. viewport and stays the same irrespective of 
+     * page scroll.
+     * 
+     * sticky: 
+     * 
+     * z-index: places an element in document along z-axis. Default value is 0 on flat plant. Any
+     * value -ve puts it background and +ve brings it forward. z-index works only with position 
+     * property (even if it is static). Without it it has no effect.
+     */
+    position: static; /* default */
 
     /* 
      * Set element's vertical alignment to middle 
@@ -139,6 +178,12 @@
  * Merge separate outlines on cell creating thick borders
  * ------------------------------------------------------
  * border-collapse: collapse;
+ *
+ * Element moves out of page width introducing a scrollbar
+ * -------------------------------------------------------
+ * This is most probably due to margins and borders adding on top of elements width (probably)
+ * defined as 100%. To fix this, use box-sizing: border-box which will stick all the attributes 
+ * of box (margin, padding, border, box-shadow) within specified limits.
  * 
  */
 
@@ -183,4 +228,6 @@ div p {
 
 h2#white.test {
     color: rgb(236, 218, 218);
+    position: absolute;
+    top: 0px;
 }
