@@ -135,14 +135,22 @@
      * element on scroll. TRBL values can be applied to move the element around w.r.t. ancestor.
      * position context: first ancestor with position property. (html if none).
      *
-     * relative:
+     * relative: positioning of element is relative to itself. This position value is handy even
+     * when a child element needs absolute positioning and needs parent to have position property
+     * on it. This can be used to move elements to TRBL combinations.
+     * If TRBL value moves element out of parent, overflow: hidden property can be used to prevent
+     * it from wandering. Overflow on body does not work as it delegates it to html. 
      * 
      * fixed: takes the element out of document flow and element appears with attributes of inline
      * block display type. It fixes the element in a position that does not move with scroll. 
      * This is because the position is fixed w.r.t. viewport and stays the same irrespective of 
      * page scroll.
      * 
-     * sticky: 
+     * sticky: this is a fun position property. Sticky position is used with TRBL in order to 
+     * come into effect. It is scrollable till specified TRBL value reaches and then sticks to 
+     * the parent frame. Its existence is till its parent container and will scroll away if parent
+     * component scrolls out of the frame. 
+     * [best used] with navbars that scroll and stick to top. 
      * 
      * z-index: places an element in document along z-axis. Default value is 0 on flat plant. Any
      * value -ve puts it background and +ve brings it forward. z-index works only with position 
@@ -155,6 +163,48 @@
      * !important: overrides style at all other levels. Bad practice to use it & avoid at all costs
      */
     vertical-align: middle !important;
+
+    /*
+     * background-image: sets background image for the element. 
+     * linear-gradient(<from>, <to>, <fromcolor> [upto x%], <tocolor>);
+     * radial-gradient(<from> [inside], <to> [outside], <fromcolor>, <tocolor>);
+     * 
+     * stacked background can be created by stacking multiple images/backgrounds on top of each 
+     * other. This is done by specifying backgrounds with all each's shorthand properties together
+     * separated by commas. 
+     * background: linear-gradient(red, blue), url("img") 50%/100% auto border-box, #dede23;
+     * order: HIGH <------------------------------------------------------------------- LOW
+     * 
+     * background-color: sets background color for the element. If background-image is also defined
+     * for the element, both apply. Image sits on top of color. 
+     * 
+     * background-size: <width> <height>; defines image dimensions. There are predefined values 
+     * by names like cover (landscape: width: 100% height: auto | portrait: width: auto, height:
+     * 100%) that can maintain aspect ratio. 
+     * Sizing image by putting size restrictions on parent does not impact image as images do not
+     * respect containing element's dimensions (iff they are inline). If they're made block or 
+     * inline-block, parents dimensions would restrict image size. 
+     *
+     * background-position: x-edge, y-edge; moves the image by mentioned values. % dictate how the
+     * regions not displayed in element are distributed, e.g. 50% can distribute on top & bottom.
+     * Defines values from left and top.
+     *
+     * background-origin: border-box | content-box | padding-box. Same as box-sizing. As image is 
+     * cropped and oversized, when border is applied image under the cropped region comes into 
+     * play and takes up border region (under the border) and can result in distorted layout. To
+     * handle this use border-box to set border within visible image area.
+     *
+     * background-clip: border-box -> image under border | padding-box -> no image under border | 
+     * content-box -> clip before padding.
+     * 
+     * background-attachment: makes image scrollable. Not really used that much. Fixed value 
+     * keeps the image fixed to the viewport.
+     *
+     * shorthand-
+     * background: <url> [position]/[size] [repeat] [origin] [clip]
+     */
+     background-image: url("img.png");
+     background-origin: border-box;
 }
 
 /* 
@@ -184,50 +234,79 @@
  * This is most probably due to margins and borders adding on top of elements width (probably)
  * defined as 100%. To fix this, use box-sizing: border-box which will stick all the attributes 
  * of box (margin, padding, border, box-shadow) within specified limits.
+ *
+ * Box-shadow in image leaves a white region between image and shadow
+ * ------------------------------------------------------------------
+ * vertical-align: top; (this will remove the white region in bottom)
  * 
  */
 
-header {
+html { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    color: rgb(52, 52, 53);
+}
+
+a {
+    text-decoration: none;
+    color: inherit; 
+}
+
+a:hover, a:active {
+    color: rgb(167, 167, 167);
+}
+
+span.title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.navbar {
+    display: inline-block;
     width: 100%;
-    background-color: aquamarine;
-    height: 150px;
-    padding: 20px;
+    line-height: 2em;
+    vertical-align: middle;
     box-sizing: border-box;
+    padding: 4vh 0 2vh;
+    position: sticky;
+    top: 0;
+    padding: 1vh 0;
+    background-color: rgba(0,0,0,.7);
+    color: #f7f7f7;
+    margin: 4vh 0 2vh;
+    filter: invert();
 }
 
-header h3 {
-    margin: 0px;
+.logo {
+    display: inline;
+    font-weight: bold;
+    margin-left: 2vw;
+    font-size: 2em;
 }
 
-html, body {
-    margin: 0px;
+ul {
+    display: inline;
+    right: 2vw;
+    margin: 0;
+    position: absolute;
 }
 
-#white {
-    color: white;
+li.button {
+    display: inline-block;
+    padding: 0 1vw;
+
 }
 
-h2 {
-    color: rgb(46, 196, 196);
-    background-color: rgb(32, 35, 49);
-}
-
-div {
-    width: 800px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+.content-container {
+    margin: 0 20%;
     text-align: justify;
 }
 
-div p {
-    color: red;
-}
-
-.main-nav_items {
-    display: inline;
-}
-
-h2#white.test {
-    color: rgb(236, 218, 218);
-    position: absolute;
-    top: 0px;
+.content-container > p {
+    padding: 1vh 0;
+    line-height: 1.5em;
 }
