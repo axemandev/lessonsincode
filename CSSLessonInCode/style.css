@@ -140,6 +140,7 @@
      * on it. This can be used to move elements to TRBL combinations.
      * If TRBL value moves element out of parent, overflow: hidden property can be used to prevent
      * it from wandering. Overflow on body does not work as it delegates it to html. 
+     * parent is any element with block level (for static too)
      * 
      * fixed: takes the element out of document flow and element appears with attributes of inline
      * block display type. It fixes the element in a position that does not move with scroll. 
@@ -205,6 +206,21 @@
      */
      background-image: url("img.png");
      background-origin: border-box;
+
+     /*
+      * [x]em: x times font size of parent element. Ultimate parent element is document on which 
+      * browser's font size is applied (root em or rem). So in short all em sizes are relative to 
+      * their parent which is relative to at top level to browser font, unless the hierarchy 
+      * encounters a static font size value in chain. 
+      * Use em only for leaf nodes to avoid mess.
+      *
+      * rem: is better in terms of stability than em as all fonts defined as rem unit are w.r.t.
+      * browser font. Parent fonts are relative, for e.g. root of 10px and div of 1.2em = 12px 
+      * will have its child's font (as declared) 1.5em = 12 * 1.5 = 18em. This can cause a lot of
+      * confusion and mess to handle. rem can serve in such cases.
+      * rem can be applied to other properties than font (like margin, width, etc).
+      */
+     font-size: 1.5em;
 }
 
 /* 
@@ -265,19 +281,27 @@ span.title {
     font-weight: bold;
 }
 
+#goto-top-anchor {
+    position: fixed;
+    bottom: 1vh;
+    right: 1vw;
+    border-bottom: 20px solid red;
+    border-left: 20px solid rgba(0,0,0,0);
+    border-right: 20px solid rgba(0,0,0,0);
+}
+
 .navbar {
     display: inline-block;
     width: 100%;
     line-height: 2em;
     vertical-align: middle;
     box-sizing: border-box;
-    padding: 4vh 0 2vh;
     position: sticky;
     top: 0;
     padding: 1vh 0;
     background-color: rgba(0,0,0,.7);
     color: #f7f7f7;
-    margin: 4vh 0 2vh;
+    margin: 6vh 0 2vh;
     filter: invert();
 }
 
@@ -309,4 +333,89 @@ li.button {
 .content-container > p {
     padding: 1vh 0;
     line-height: 1.5em;
+}
+
+.home-img {   
+    background: url("images/test-img.jpg");
+    background-size: 100% auto;
+    background-position-y: 80%;
+    width: 100%;
+    box-sizing: border-box;
+    height: 100vh;
+    display: block;
+    position: absolute;
+    background-clip: border-box;
+    top: 0;
+    z-index: -1;
+}
+
+.home-img-clear {
+    padding-top: 90vh;
+}
+
+/* 
+ * PLAYING WITH SHAPES
+ * 
+ * Square & Rectangle: these are pretty simple that can be manipulated with div width and height
+ * 
+ * Triangle: for any shape with upto 4 edges, we can manipulate simple div and play around with 
+ * border properties. For triangle we can have a div with fat borders making a rectangle. However
+ * removing top border makes left and right fall over to each other to form triangle. Same behavior
+ * can be used to create other shapes.
+ *
+ * Circle: square with border radius 50%.
+ * 
+ * Ellipse: Rectangle with border radius 50%.
+ *
+ * Trapezoid: Trapezoid is a little tricky. When borders are created with thickness they create a
+ * block on top of each edge. That leaves TL TR BL BR edges (small corner squares) empty. So CSS
+ * divides this 50-50 (diagonal partition). So if size of original block is 0, we'll end up with 
+ * diagonal line partitions. (For a block of small size with thick borders, imagine overall figure
+ * as pyramid with chopped top and seen as a top view).
+ * 
+ */
+.triangle {
+    display: inline-block;
+    width: 0px;
+    border-left: 50px solid rgba(0,0,0,0);
+    border-right: 50px solid rgba(0,0,0,0);
+    border-bottom: 50px solid red;
+}
+
+.square {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background: red;
+}
+
+.rectangle {
+    display: inline-block;
+    width: 75px;
+    height: 50px;
+    background: red;
+}
+
+.circle {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: red;   
+}
+
+.ellipse {
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    border-radius: 50%;
+    background: red;
+}
+
+.trapezoid {
+    display: inline-block;
+    width: 40px;
+    border-left: 30px solid rgba(0,0,0,0);
+    border-right: 30px solid rgba(0,0,0,0);
+    border-bottom: 50px solid red;
 }
