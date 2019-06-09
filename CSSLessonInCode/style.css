@@ -203,6 +203,11 @@
      *
      * shorthand-
      * background: <url> [position]/[size] [repeat] [origin] [clip]
+     *
+     * NOTE :
+     * border-box: content + padding + border
+     * padding-box: content + padding
+     * content-box: just content
      */
      background-image: url("img.png");
      background-origin: border-box;
@@ -233,6 +238,28 @@
  *
  */
 #some-dummy-id a:hover { font: inherit; }
+
+
+ /* 
+  * MEDIA QUERIES
+  *
+  * Syntax: @media (conditions that evaluate to true/false)
+  * Within media query is regular css code -> styles that apply to elements once the media 
+  * condition is true.
+  *
+  * Order of media query is important. For same matching conditions the one defined later takes
+  * prcedence. For different conditions this is more like exception handling in Java. Ensure 
+  * for e.g. min-width with lesser value is defined first. Else the later always one remains true 
+  * and the other media queries are overridden.
+  * 
+  * Some useful logical attributes - 
+  * min-width | max-width | min-height | max-height: select resolution of device to switch style
+  * orientation: portrait | landscape: to manage view based on mobile orientation
+  * 
+  */
+@media (min-width: 640px) and (min-height: 720px) {
+    h1 { color: red; }
+}
 
 /* 
  * HACKS
@@ -293,7 +320,7 @@ span.title {
 .navbar {
     display: inline-block;
     width: 100%;
-    line-height: 2em;
+    line-height: 2rem;
     vertical-align: middle;
     box-sizing: border-box;
     position: sticky;
@@ -309,7 +336,7 @@ span.title {
     display: inline;
     font-weight: bold;
     margin-left: 2vw;
-    font-size: 2em;
+    font-size: 2rem;
 }
 
 ul {
@@ -338,19 +365,53 @@ li.button {
 .home-img {   
     background: url("images/test-img.jpg");
     background-size: 100% auto;
-    background-position-y: 80%;
+    background-repeat: no-repeat;
+    background-position-y: 50%;
     width: 100%;
     box-sizing: border-box;
     height: 100vh;
     display: block;
-    position: absolute;
     background-clip: border-box;
     top: 0;
+    position: absolute;
     z-index: -1;
 }
 
 .home-img-clear {
-    padding-top: 90vh;
+    margin-top: 90vh;
+}
+
+@media (max-width: 1423px) {
+    .home-img {  
+        background-size: auto 100vh;
+        background-position-x: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    ul.buttons {
+        display: none;
+    }
+
+    .content-container {
+        margin: 2rem;
+    }
+    .home-img {  
+        background-size: 100% auto;
+        background-position: 0 0;
+        position: absolute;
+    }
+    .home-img-clear {
+        margin-top: 50vh;
+    }
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .navbar {
+        line-height: 1.2rem;
+    }
+    
 }
 
 /* 
