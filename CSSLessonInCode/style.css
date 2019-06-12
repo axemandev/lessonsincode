@@ -239,6 +239,21 @@
  */
 #some-dummy-id a:hover { font: inherit; }
 
+/*
+ * Advanced attributes: attributes can be specifically chosen based on complete or partial 
+ * values they hold. 
+ *
+ * element[attribute] - this selector picks element that has mentioned attribute
+ * element[attribute="value"] - same as above but further restircts on value with attribute
+ * 
+ * ~= contains specified value among list of different values on element.
+ * |= value starts with provided value followed by - and something
+ * ^= prefix with mentioned value
+ * $= suffix with mentioned value
+ * *= contains anywhere in the value.
+ * [sr*="cdn" i] - i here stands for case insensitive match.
+ */
+[lang~="en-us"] { font: inherit; }
 
  /* 
   * MEDIA QUERIES
