@@ -255,6 +255,61 @@
  */
 [lang~="en-us"] { font: inherit; }
 
+
+/*
+ * FLEXBOX
+ * -------
+ * display:flex - makes the element container of flex box. This container will contain elements
+ * which can be manipulated using flex properties. Container size is adjusted according to
+ * max/min space required by flex items based on how their widths and heights are defined.
+ * Properties that are not defined are available for adjustment to fit into container well. This
+ * is managed by the container. 
+ *
+ * display: inline-flex - takes up required space on main axis and does not change size based on
+ * resolution (more kind of fixed in size) -> anti-block level behavior.
+ *
+ * flex-wrap: nowrap | wrap - indicates wrap behavior when element size exceeds container size.
+ * With no wrap container adjusts to required size while in case of wrap overflowing items move
+ * to next col/rol.
+ * [wrap-reverse]: aligns and wraps in reverse order. In case of x-axis primary alignment works
+ * bottom to top and wrap moves wrapped items to top instead of below.
+ * 
+ * Parent (container) can have following props
+ * 
+ * flex-direction: defines main axis of flex container along with flex elements are arranged.
+ * [row | col] - default is row. For col items are aligned one below other along y-axis (mobile)
+ * ----> row (from top if col) | <---- row-reverse (from bottom if col-reverse) |
+ * V col (if row, then from top left corner) | ^ col-reverse (if row-reverse from top right corner)
+ * 
+ * flex-flow: shorthand for flex-direction and flex-wrap
+ *
+ * justify-content: sets alignment along main axis. Row - horz. alignment, col - vert. alignment
+ *
+ * align-content: aligns items along cross axis. Manages separation between different lines of
+ * cross axis. (Need further study)
+ *
+ * align-items: sets alignment along cross axis. Row - sets vertical alignment, col - sets horz.
+ *
+ * Child components (flex items) can have following properties
+ *
+ * flex-grow: 2 - flex grow property defines in what proportion elements will grow in size when 
+ * display size changes. An item with flex-grow: 1 and another with flex-grow: 2 will lead to 
+ * elements growing in proportion 1:3 and 2:3. 
+ * similar to flex-grow is flex-shrink. flex-grow/shrink: 0 sets the items to fixed size and 
+ * does not allow to grow or shrink in size when dimensions change. 
+ *
+ * align-self: aligns a single flex item along cross axis. It can take same values as align-items
+ * however the main difference is the elements this style gets applied to.
+ *
+ * order: arranges flex items within a flex container sorted by this order. Default order for items
+ * is 0. Any one item with -ve value will become first and +ve value will become last.
+ *
+ * flex-basis: 200px; flex-basis defines the size along main axis. So a value of 200px will 
+ * override width if flex-direction is row and override height if its column. However flex-basis
+ * auto sets the actual width/height defined in for the class and does not override. 
+ */​
+ #flex-demo { display: flex; }
+
  /* 
   * MEDIA QUERIES
   *
@@ -396,6 +451,17 @@ li.button {
     margin-top: 90vh;
 }
 
+.shapes {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin: 2rem;
+}
+
+.shape {
+
+}
+
 @media (max-width: 1423px) {
     .home-img {  
         background-size: auto 100vh;
@@ -456,6 +522,7 @@ li.button {
     border-left: 50px solid rgba(0,0,0,0);
     border-right: 50px solid rgba(0,0,0,0);
     border-bottom: 50px solid red;
+    order: 5;
 }
 
 .square {
@@ -463,6 +530,7 @@ li.button {
     width: 50px;
     height: 50px;
     background: red;
+    order: 10;
 }
 
 .rectangle {
