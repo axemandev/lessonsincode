@@ -310,6 +310,134 @@
  */​
  #flex-demo { display: flex; }
 
+ /*
+  * GRID
+  * ----
+  * 
+  * display: grid; is defined in an element to make it a grid container. Container forms the canvas
+  * that is divided into grid of rows and columns of variable spans. 
+  *
+  * grid-template-columns: 200px 2fr 20% 3fr | repeat(4, 10% 15%); repeats | minmax(10%, 50%)
+  * This property is defined in grid container. By default a grid is single row single column 
+  * component. This has to be explicitly broken down using grid-template-xxx property. In case above
+  * grid is broken into 200px, 20%, and 5 fractions of (100% - 200px - 20%) divided in 2 chunks of
+  * 2fr and 3fr.
+  * repeat repeats the arg2 pattern x times (arg1)
+  * repeat(autofill, 10rem) - adds/reduces number of cols as viewport size changes. autofit instead 
+  * of autofill also aligns grid in center when there is additional space available. 
+  * minmax allows conatiner to manage element size between min and max values.
+  *
+  * grid-template-areas: name name .. 
+  *                      name name ..
+  * creates a named matrix type grid by names. use grid-area: name in grid element to identify 
+  * which named area it is going to occupy in the grid.
+  *
+  * justify-items / align-items: (deafult) stretch | center | start | end;
+  * same as defined in flex box. Really cool when applied to grid. 
+  * 
+  * justify-content / align-content: aligns entire grid along main/cross axis. This is used when you 
+  * want to align the grid, say center of the container area (when grid has unused area).
+  *
+  * grid-auto-rows: size; sets size of automatically genarated rows for dynamic content (Rows).
+  * 
+  * grid-auto-flow: (default) row | column [dense]; appends new rows | cols for dynamically added 
+  * content. Dense ensures dom rule of not putting content in area that is empty due to viewport
+  * size (and not mentioning start/end for items) is NOT respected and items occupy empty space. 
+  *
+  * Child Components:
+  *
+  * grid-column-start: 3; grid-column-end: 5; These properties indicate grid line (col. start edge)
+  * from which the current grid element should start and grid line at which it should end. This is 
+  * required to span a cell across multiple columns. 
+  *
+  * grid-row-start: 1; grid-row-end: 3; Similar to grid-column-xx component, applied across rows.
+  * values can also be -ve indicating lines from end or as 'span x' indicating start with line 1 and
+  * span x cols. Nothing happens if span makes element to overflow available area.
+  * shorthand: grid-column: x (start) / y (end);
+  * 
+  * grid-area: x-start / sizex / y-start / sizey
+  *
+  * grid-row-gap:
+  * grid-column-gap: 5px; adds gap of 5px to column (vertical).
+  * shorthand: grid-gap: row col;
+  * 
+  * Grid elements can overlap. To manipulate which one appears on top use z-index.
+  *
+  * justify-self / align-self: position a single grid element along main/cross axis. 
+  * 
+  */
+ #grid-demo { display: grid; }
+
+ /*
+  * TRANSFORM & TRANSITION
+  * ----------------------
+  *
+  * >> transform: 
+  *
+  * rotate<X|Y|Z>(xdeg) - rotates the element by x degrees around origin (default center).
+  *
+  * translate<X|Y|Z|3D>(xunits) - moves the element along x,y,z axis by mentioned units. If used with 
+  * rotate, keep in mind the movement will be along a rotated axis. 
+  *
+  * skew<X|Y>(xdeg) - skew the element by mentioned degrees along given axis. skew(x y) shorthand.
+  *
+  * scale<X|Y>(x) - scales element along given axis x times. scale(x) shorthand for x on both axis. 
+  *
+  * perspective(xunit) - sets perspsective (distance from object) for the element. This gives persp 
+  * in sketches kind of look to element. 
+  * Theres also a perspective: xunit property that should be 
+  * applied to parent/container to have same perspective for all the items inside it. 
+  * perspective-origin: left | right | xunits .. . moves the position of observert and adjusts appearance
+  * of element accordingly. 
+  *
+  * transform-style: flat(default) | preserve-3d (maintains element positions in 3d space)
+  *
+  * backface-visibility: when rotating/flipping an element show or hide backface(side).
+  *
+  * transform-origin: center | start | end | Xpx Ypx
+  * defines where the origin of element lies. Futher transformations like rotate are applied across
+  * this defined origin.   
+  *
+  * >> transition:
+  *
+  * transition: <property> <duration> <style> <delay>
+  * e.g. transition: opacity 500ms ease-out 500ms;
+  * in above example opacity change on action will transit in .5 sec with a delayed start of .5 sec
+  * and will slow down in animation towards the end (ease out).
+  * timing - cubic-bezier(duration-part1, dp2, dp3, dp4) @READ
+  * 
+  * NOTE: applying transitin to displayproperty does not add delay. To do that use setTimeout() in JS.
+  */
+#trans-demo { transform: rotateX('45deg'); }
+
+ /* 
+  * ANIMATIONS
+  * ----------
+  * 
+  * @keyframes - defines frames at different time intervals. CSS does smoothening of transition between
+  * defined keyframes. 
+  * e.g. wiggle in style below. 
+  * to apply this animation to a selector use 
+  * animation: wiggle [animie_duration] [delay] [# of iterations] [state after animation]
+  * final state: alternate | reverse | forwards (final animation state) | backwards (starting state)
+  * 
+  * animation: wiggle 500ms 1s ease-out forwards 1;
+  */
+@keyframes wiggle { 
+    0% {
+        /* any css proprety can be animated */
+        transform: rotateZ(0deg);
+    }
+    60% {
+        transform: rotateZ(90deg);
+    }
+    80% { 
+        transform: rotateZ(65deg);
+    }
+    100% {
+        transform: rotateZ(70deg);
+    }
+}
  /* 
   * MEDIA QUERIES
   *
@@ -455,11 +583,52 @@ li.button {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    margin: 2rem;
+    margin: 2rem 0;
 }
 
-.shape {
+.shape {}
 
+.blocks {
+    display: grid;
+    grid-template-columns: 30% 20% 4fr 2fr;
+    margin: 3rem 0;
+    border: 1px dashed blue;
+}
+
+.block {
+    border: 1px dotted red;
+}
+
+.b1 { 
+    background-color: #5194d8; 
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+.b2 { 
+    background-color: #51d8c6; 
+    height: 5rem;
+}
+.b3 { 
+    background-color: #d85189; 
+    grid-column-start: 3;
+    grid-column-end: 5;
+}
+.b4 { 
+    background-color: #d8d651; 
+    grid-column-start: 2; grid-column-end: 4;
+}
+.b5 { 
+    background-color: #5351d8; 
+    height: auto;
+}
+
+.trans {
+    width: 200px;
+    height: 50px;
+    background-color: #d85189;
+    margin-bottom: 100px;
+    transform-origin: top left;
+    animation: wiggle 500ms 1s ease-out forwards 1;
 }
 
 @media (max-width: 1423px) {
