@@ -7,11 +7,12 @@
 	 # ================
 	 # prepare-resources - Copy resources required for project. Resource copying can be customized.
 	 # validate - validate if everything in project is correct for running a build. 
-	 # compile - compile resources to generate classes
+	 # compile - compile source to generate classes
+	 # compile-test - compile test to generate related classes
 	 # test - Run test cases for the project in /src/main/test folder
 	 # package - create packaged solution (jar/war) based on package definition in pom.xml
-	 # install - install build into local/maven repository
-	 # deploy - deploy application in central maven repository
+	 # install - install build into local repository (.m2)
+	 # deploy - deploy application in central maven/remote repository
 	 # 
 	 #
 	 # Goals
@@ -47,7 +48,7 @@
 	 # Maven follows hierarchical system of dependencies. Child dependency inherits details from parent. 
 	 # parent tag defines the parent dependency for current maven project. 
 	 # Only depedencies declared explicitly here would be included in build (ignoring whats declared 
-	 # otherwise in parent). Version number is inhertied from parent. 
+	 # otherwise in parent - dependencyManagement behavior). Version number is inhertied from parent. 
 	 # -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -84,6 +85,70 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+	
+	<!-- #
+	 # scm - Source Control Management
+	 # scm tag is used in conjunction with maven release plugin. This tag allows release plugin to 
+	 # tag the code for release and push it to git repository defined here. 
+	 #
+	 # connection: used for pull (read) from git repository
+	 # developerConnection: used to push (write) to git repository
+	 # url: repository url
+	 # -->
+	<scm>
+		<connection>scm:git:https://github.com/axemandev/revision.git</connection>
+		<url>https://github.com/axemandev/revision</url>
+		<developerConnection>scm:git:https://github.com/axemandev/revision.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<!-- #
+	 # distributionManagement section defines remote artifacts repository. Default remote repository
+	 # is maven central. However this is a public repository. There are many free and licensed third
+	 # party artifact management tools available in market like Nexus, Artifactory, Archiva, etc. 
+	 # Artifactory is paid while Nexus and Archiva provide free versions. 
+	 #
+	 # repository: define repositories here like release, staging, development (snapshot). Each repo
+	 # is identified by its <id>. This id is also referred in .m2/settings.xml | 
+	 # $MAVEN_HOME/config/settings.xml file to hold credentials for remote repository. 
+	 # NOTE: refer google for encrypting password and xml configuration for repo credentials in .m2
+	 # settings-security.xml file syntax -
+	 # <settingsSecurity>
+  	 #   <master>generated_encrypted_password</master>
+     # </settingsSecurity>
+	 # settings.xml syntax -
+	 # <settings>
+  	 # 	 <servers>
+     #      <server>
+     #         <id>nexus-snapshots</id>
+     #         <username>admin</username>
+     #         <password>{uIPnjkJ1yjQHMh/pQuKq7/BWiIgzQhGj4JuOOChEZlA=}</password>
+     #      </server>
+     #   </servers>
+     # </settings>
+	 #
+	 # url: provide url for specific remote repository (release/snapshot)
+	 # Current configuration uses Nexus repository. Refer to online Nexus setup document.
+	 # -->
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<url>http://localhost:8081/repository/maven-releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<url>http://localhost:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>	
+	
+	<!-- #
+	 # dependencyManagement is used to define dependencies that can be inherited by child projects
+	 # conditionally. This is same as what we import from spring boot parent project. Dependencies
+	 # are by default imported in child project swelling the project package (unnecessarily at times)
+	 # dependencyManagement allows child project inheriting from (current) parent project to import
+	 # only those dependencies that are explicitly declared in child. 
+	 # -->
+	<dependencyManagement></dependencyManagement>
 
 	<!-- #
 	 # Dependencies define which jar files are required for this project and at which level/stage.
@@ -159,28 +224,102 @@
 		</dependency>
 	</dependencies>
 
-	<!-- #
-	 # TODO repository
-	 # -->
-	 
-	<!-- #
-	 # TODO scm
-	 # -->	 
-
-	<!-- #
-	 #
-	 # Plugins are defined under build.
-	 # 
-	 # Plugin Management provides similar parent-child hierarchy for plugs like for dependencies.
-	 # -->
 	<build>
+		<!-- #
+		 # Plugin Management provides similar parent-child hierarchy for plugs like for dependencies.
+		 # -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
+		<!-- #
+		 #
+		 # Plugins are defined under build. Plugins are nothing but Java programs and configurations 
+		 # that perform a specific task for maven (using mvn command). Plugins contain execution section
+		 # with phase and goal. 
+		 # 
+		 # phase: Defines what phase has to be executed. A phase is grouping of multiple goals.
+		 # goal: Defines what task is to be performed.
+		 # configuration: Variables that needs setting up in order to perform the goal. 
+		 # -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<fork>true</fork>
+					<executable>/usr/lib/jvm/java-8-openjdk-amd64/bin/javac</executable>
+				</configuration>
+			</plugin>
+			<!-- #
+			 # This is maven release plugin that is used to -
+			 # A. Tag a project and commit release to scm
+			 # B. Manage (.. bump up) release version in pom.xml
+			 # C. Push package to remote repository.
+			 # 
+			 # Release plugin performs these activities through following commands - 
+			 # mvn release:clean - cleans the project for release 
+			 # mvn release:prepare - do all scm and pom.xml activities
+			 # mvn release:perform - get the released code from scm, package and deploy to 
+			 # remote.
+			 # -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<releaseProfiles>releases</releaseProfiles>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
+
+	<!-- #
+	 # Profiles are conditions that are activated by profile values (like env variables). 
+	 # Defining a plugin within profile executes the plugin conditionally. 
+	 # -->
+	<profiles>
+		<profile>
+			<id>releases</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.5.1</version>
+						<executions>
+							<execution>
+								<id>default-deploy</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<serverId>nexus-releases</serverId>
+							<nexusUrl>http://localhost:8081/nexus/</nexusUrl>
+							<skipStaging>true</skipStaging>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	
 	<!-- #
 	 # 
