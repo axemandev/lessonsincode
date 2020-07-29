@@ -1,0 +1,18 @@
+Install npm & angular cli
+> npm intall -g @angular/cli
+
+Start new ng project using -
+> ng new <projet name>
+
+Update dependencies -
+> npm install
+
+Fix vulnerabilities -
+> npm audit fix
+
+Create new ng component -
+> ng generate component <comp name>
+[shorthand] > ng g c <comp name>
+
+
+

@@ -1,7 +1,17 @@
-<h2> Static Content Goes Here </h2> 
-<!-- 
+<h2> Static Content Goes Here </h2>
+<!--
   -- Adds content of routed component after router-outlet tag. Any component
-  -- call prior to this tag renders normally before routed content. This is 
+  -- call prior to this tag renders normally before routed content. This is
   -- handy in case of creating pages with static content on each link like navbar.
   -->
 <router-outlet></router-outlet>
+
+<!--
+  -- To read a variable in child component from parent, name (tag) the child
+  -- component call and use name.variable to access its value.
+  --
+  -- To write a variable in child component from parent, use [ ] directive
+  -- using name declared in @Input decorator of the variable.
+  -->
+<app-footer #footer [accTime]='setAccessTime()'></app-footer>
+{{footer.accessedTime}}
